@@ -1,0 +1,11 @@
+services:
+  backend:
+    image: caching-poc:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - vehicle
+
+networks:
+  vehicle:
+    name: quarkus-vehicle-network
