@@ -17,14 +17,16 @@ services:
     networks:
       - vehicle
 
-  # Demo Application using apache inginte , redis caching 
+  # POC Application using apache inginte , redis caching 
+  # APACHE_IGNITE
+  # REDIS
   backend:
     image: caching-poc:latest
     restart: unless-stopped
     environment:
       QUARKUS_REDIS_URL: redis://redis:6379
       QUARKUS_IGNITE_URL: ignite:10800
-      CACHE_CLIENT: REDIS
+      CACHE_CLIENT: APACHE_IGNITE
     ports:
       - "8080:8080"
     depends_on:
