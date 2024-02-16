@@ -21,6 +21,10 @@ services:
   backend:
     image: caching-poc:latest
     restart: unless-stopped
+    environment:
+      QUARKUS_REDIS_URL: redis://redis:6379
+      QUARKUS_IGNITE_URL: ignite:10800
+      CACHE_CLIENT: REDIS
     ports:
       - "8080:8080"
     depends_on:
