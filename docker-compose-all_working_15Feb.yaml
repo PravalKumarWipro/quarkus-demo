@@ -1,0 +1,50 @@
+services:
+
+  redis:
+    container_name: rediscache
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./storage/redis/data:/data
+    networks:
+      - vehicle
+  ignite:
+    container_name: ignite_service
+    image: apacheignite/ignite
+    restart: unless-stopped
+    environment:
+      - IGNITE_QUIET = false
+    ports:
+      - "10800:10800"
+      - "47500:47500"
+      - "47100:47100"
+      - "11211:11211"
+      - "49112:49112"
+    networks:
+      - vehicle
+
+  # Demo Application using apache inginte , redis caching 
+  backend:
+    image: caching-poc:latest
+    restart: unless-stopped
+    environment:
+      QUARKUS_REDIS_URL: redis://redis:6379
+      QUARKUS_IGNITE_URL: ignite:10800
+      CACHE_CLIENT: REDIS
+    links:
+      - ignite
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - ignite
+    networks:
+      - vehicle
+
+
+networks:
+  vehicle:
+    name: quarkus-caching-poc-demo
+
