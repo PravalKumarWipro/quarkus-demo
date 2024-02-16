@@ -15,10 +15,10 @@ import javax.ws.rs.Produces;
 public class AppConfig {
 
 
-    @ConfigProperty(name = "apacheIgniteUrl", defaultValue = "127.0.0.1:10800")
+    @ConfigProperty(name = "quarkus.ignite.url", defaultValue = "127.0.0.1:10800")
     String apacheIgniteUrl;
 
-    @ConfigProperty(name = "redisUrl", defaultValue = "redis://127.0.0.1:6379")
+    @ConfigProperty(name = "quarkus.redis.url", defaultValue = "redis://127.0.0.1:6379")
     String redisBaseUrl;
 
     @ConfigProperty(name = "cacheDuration", defaultValue = "60")
@@ -29,6 +29,7 @@ public class AppConfig {
     @Produces
     @ApplicationScoped
     public IgniteClient igniteClient() {
+	System.out.println("Ignite URL :" + apacheIgniteUrl); 
         ClientConfiguration cfg = new ClientConfiguration().setAddresses(apacheIgniteUrl);
         IgniteClient client = Ignition.startClient(cfg);
         return client;
@@ -54,6 +55,7 @@ public class AppConfig {
     @Produces
     @ApplicationScoped
     public RedissonClient redisClient() {
+	System.out.println("REDIS URL :" + redisBaseUrl);
         Config config = new Config();
         config.useSingleServer()
                 .setAddress(redisBaseUrl);
