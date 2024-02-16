@@ -33,4 +33,5 @@ services:
 networks:
   vehicle:
     name: quarkus-caching-poc-demo
+    driver: bridge
 
