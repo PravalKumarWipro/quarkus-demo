@@ -26,7 +26,7 @@ services:
     environment:
       QUARKUS_REDIS_URL: redis://redis:6379
       QUARKUS_IGNITE_URL: ignite:10800
-      CACHE_CLIENT: REDIS
+      CACHE_CLIENT: ${CACHE_SET}
     ports:
       - "8080:8080"
     depends_on:
