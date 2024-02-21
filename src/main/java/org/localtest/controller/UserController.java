@@ -10,6 +10,9 @@ import javax.ws.rs.core.MediaType;
 @Path("/user")
 public class UserController {
 
+    @Value("${cache.client:APACHE_IGNITE}")
+    String cacheClient;
+
     @Inject
     public UserServiceImpl userServiceImpl;
 
@@ -17,7 +20,7 @@ public class UserController {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/test")
     public String hello() {
-        return "Hello From Quarkus";
+        return "Hello From Quarkus!!! Cache Client we are using  :: "+cacheClient;
     }
 
 
