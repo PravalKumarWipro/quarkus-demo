@@ -2,7 +2,7 @@ package org.localtest.controller;
 
 import org.localtest.model.User;
 import org.localtest.service.UserServiceImpl;
-
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/user")
 public class UserController {
 
-    @Value("${cache.client:APACHE_IGNITE}")
+   @ConfigProperty(name = "cache.client", defaultValue = "APACHE_CLIENT")
     String cacheClient;
 
     @Inject
