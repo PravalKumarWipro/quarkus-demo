@@ -1,43 +1,33 @@
 services:
-
   redis:
     container_name: redis_service
     image: redis:latest
-    restart: unless-stopped
     ports:
       - 6379:6379
-    networks:
-      - vehicle
   ignite:
     container_name: ignite_service
-    image: apacheignite/ignite
-    restart: unless-stopped
+    #image: apacheignite/ignite
+    image: gridgain/community:8.9.2
     ports:
       - 10800:10800
-    networks:
-      - vehicle
-
-  # POC Application using apache inginte , redis caching 
-  # APACHE_IGNITE
-  # REDIS
-  backend:
-    image: caching-poc:latest
-    restart: unless-stopped
+  cacheservice:
+    image: springboot-cache-image:latest
     environment:
-      QUARKUS_REDIS_URL: redis://redis:6379
-      QUARKUS_IGNITE_URL: ignite:10800
-      CACHE_CLIENT: ${CACHE_SET}
+      REDIS_URL: redis://redis:6379
+      IGNITE_URL: ignite:10800
+      CACHE_CLIENT: ${CACHE_VALUE}
+      CACHE_NAME: ${CACHE_NAME}
     ports:
-      - "8080:8080"
+      - 7070:7070
     depends_on:
       - redis
       - ignite
-    networks:
-      - vehicle
 
-
-networks:
-  vehicle:
-    name: quarkus-caching-poc-demo
-    driver: bridge
+  quarkusclient:
+    container_name: quarkus-client
+    image: quarkus-client
+    environment:
+      BASE_URL: http://cacheservice:7070
+    ports:
+      - 7890:7890
 
